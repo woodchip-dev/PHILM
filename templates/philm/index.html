@@ -1,0 +1,160 @@
+<!doctype html>
+<html class="no-js bg" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHILM</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'philm/img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'philm/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/fontawesome/css/solid.min.css' %}">
+  </head>
+  <body>
+    <img class="bg noselect" src="{% static 'philm/img/seats.png' %}" />
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x header-wrapper noselect">
+        <div class="header large-12 medium-12 small-12 cell">
+            <div class="grid-x grid-padding-x">
+              <div class="large-6 medium-6 small-6 cell">
+                <a class="go-home" href="{% url 'philm:index' %}">
+                  <i class="fas fa-film" id="home"></i>
+                  <span class="full-text"><label for="home">Privately Hosted Index of Localized Movies</label></span>
+                  <span class="short-text"><label for="home">PHILM</label></span>
+                </a>
+              </div>
+              <div class="large-6 medium-6 small-6 cell icon-right">
+                <a class="fas fa-user-circle" type="button"></a>
+                &emsp;
+                <a class="fas fa-sign-out-alt" type="button" href="{% url 'philm:logout_view'%}"></a>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 medium-12 small-12 cell">
+          <div class="search">
+            
+            <form action="{% url 'philm:index' %}" method="post">
+              {% csrf_token %}
+              <div class="large-12 medium-12 small-12 medium-12 cell">
+                <div class="grid-x grid-padding-x">
+                  <div class="large-12 medium-12 small-12 cell">
+                    <input type="text" name="keyword" placeholder="Search by Keyword" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-x grid-padding-x">
+                <div class="large-12 medium-12 small-12 cell search-options-wrap noselect">
+                  <h5>Genres</h5>
+                  <div class="grid-x grid-padding-x">
+                    {% if genre_list %}
+                      {% for genre in genre_list %}
+                      <div class="large-2 medium-4 small-6 cell">
+                        <button id="{{ genre.genres_genre }}" type="button" class="chkbx" onclick="selected('{{ genre.genres_genre }}')"></button>
+                        <input id="+{{ genre.genres_genre }}" type="hidden" value="0" name="{{ genre.genres_genre }}" />
+                        <label for="{{ genre.genres_genre }}" class="gbox">{{ genre.genres_genre }}</label>
+                      </div>
+                      {% endfor %}
+                    {% else %}
+                    <div class="no-genres large-12 medium-12 small-12 cell">
+                      <h6>
+                        If you are not a dev, why are you here?
+                      </h6>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-x grid-padding-x">
+                <div class="large-12 medium-12 small-12 cell search-options-wrap noselect">
+                  <h5>Years</h5>
+                  <div class="grid-x grid-padding-x">
+                    {% if year_list %}
+                      {% for year in year_list %}
+                      <div class="large-1 medium-3 small-4 cell">
+                        <button id="{{ year.years_year }}" name="{{ year.years_year }}" type="button" class="chkbx" onclick="selected('{{ year.years_year }}')"></button>
+                        <input id="+{{ year.years_year }}" type="hidden" value="0" name="{{ year.years_year }}" />
+                        <label for="{{ year.years_year }}" class="ybox">{{ year.years_year }}</label>
+                      </div>
+                      {% endfor %}
+                    {% else %}
+                    <div class="no-years large-12 medium-12 small-12 cell">
+                      <h6>
+                        If you are not a dev, why are you here?
+                      </h6>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-x grid-padding-x">
+                <div class="large-12 medium-12 small-12 cell">
+                  <button class="go-search" type="submit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+      <hr />
+      <hr />
+      <div class="grid-x grid-padding-x noselect">
+
+        {% if film_list %}
+          {% for film in film_list %}
+            <div class="large-6 medium-12 small-12 cell">
+              <div class="cards">
+                <div class="grid-x grid-padding-x">
+                  <div class="large-12 medium-12 small-12 cell">
+                    <a href="/m/{{ film.id }}/">
+                      <div class="card-img-wrap">
+                        <img class="noselect card-img" src="../{{ film.film_poster }}" alt="{{ film.film_title }}_{{ film.film_year }}" title="{{ film.film_title }}_{{ film.film_year }}" />
+                      </div>
+                    </a>
+                    <div class="card-info-wrap">
+                      <h4>
+                        <a href="/m/{{ film.id }}/">{{ film.film_title }}</a>
+                      </h4>
+                      <h5>{{ film.film_year }}</h5>
+                      <h6>{% for genres in film.film_genres.all %}{{ genres }}&emsp;{% endfor %}</h6>
+                      <h6><a href="https://www.imdb.com/title/{{ film.film_imdb }}/" target="_blank">See IMDB Page</a></h6>
+                      <h6><a href="https://www.youtube.com/results?search_query={{ film.film_title }}+{{ film.film_year }}+trailer" target="_blank">Find Trailers on YouTube</a></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+      <div class="grid-x grid-padding-x">
+        <div class="more large-12 medium-12 small-12 cell">
+            <i class="fas fa-caret-down"></i>
+        </div>
+      </div>
+        {% else %}
+        <div class="none-found large-12 medium-12 small-12 cell">
+          <h5>
+            NO MOVIES FOUND
+          </h5>
+        </div>
+      </div>
+        {% endif %}
+
+    </div>
+
+    <script src="{% static 'philm/js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'philm/js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'philm/js/vendor/foundation.min.js' %}"></script>
+    <script src="{% static 'philm/js/app.js' %}"></script>
+  </body>
+</html>
