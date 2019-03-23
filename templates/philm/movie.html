@@ -7,8 +7,8 @@
     <title>{{ film.film_title }}_{{ film.film_year }}</title>
     {% load static %}
     <link rel="icon" href="{% static 'philm/img/favicon.ico' %}">
-    <link rel="stylesheet" href="{% static 'philm/css/app.css' %}">
     <link rel="stylesheet" href="{% static 'philm/css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/css/app.css' %}">
     <link rel="stylesheet" href="{% static 'philm/fontawesome/css/all.min.css' %}">
     <link rel="stylesheet" href="{% static 'philm/fontawesome/css/solid.min.css' %}">
   </head>
@@ -106,7 +106,7 @@
 
               {% endfor %}
               {% else %}
-                <div class="none-found large-12 medium-12 small-12 cell" style="margin-bottom: 5rem;">
+                <div class="none-found large-12 medium-12 small-12 cell">
                   <h5>
                     NO REVIEWS FOUND
                   </h5>

@@ -174,8 +174,7 @@ h4 a:hover, .rev-img-wrap a:hover, .username:hover
 .none-found
 {
     border-radius: 5px;
-    margin-top: 1rem;
-    margin-bottom: 0 !important;
+    margin: 0;
     text-align: center;
 }
 
@@ -410,7 +409,7 @@ input[type=number]
     background-color: #444444;
     color: #ffffff;
     border-left: 2px solid #ff0000;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     padding: 1rem 1rem 0 1rem;
 }
 
