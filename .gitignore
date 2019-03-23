@@ -1,0 +1,17 @@
+# PYTHON
+__pycache__/
+__init__.py
+
+
+# POTENTIALLY SENSITIVE CONFIG FILES
+gradproj/settings.py
+
+
+# USER AVATARS & POSTERS
+static/philm/img/avatars/*
+static/philm/img/posters/*
+
+
+# MISC FILES
+gradproj/wsgi.py
+philm/tests.py
