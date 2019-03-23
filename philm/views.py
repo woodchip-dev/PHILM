@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 # AUTH
 
 def login(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
