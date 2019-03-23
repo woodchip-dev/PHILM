@@ -86,7 +86,7 @@ def index(request):
     else:
         film_list = Film.objects.all()
 
-    context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list,}
+    context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user}
     return render(request, 'philm/index.html', context)
 
 @login_required(login_url = '/login/')
@@ -94,7 +94,7 @@ def movie(request, film_id):
     film = Film.objects.get(id = film_id)
     reviews = Reviews.objects.filter(reviews_fid = film_id)
 
-    context = {'film': film, 'review_list': reviews}
+    context = {'film': film, 'review_list': reviews, 'person': request.user}
     return render(request, 'philm/movie.html', context)
 
 @login_required(login_url = '/login/')
@@ -102,7 +102,7 @@ def person(request, user_id):
     username = User.objects.get(username = user_id)
     person = Person.objects.get(person_user = username)
 
-    context = {'user': person}
+    context = {'user': person, 'person': request.user}
     return render(request, 'philm/user.html', context)
 
 
