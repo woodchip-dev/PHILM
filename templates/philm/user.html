@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if user %}
+    <title>{{ user.person_user }}</title>
+    {% load static %}
+    <link rel="icon" href="{% static 'philm/img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'philm/css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/css/foundation.min.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'philm/fontawesome/css/solid.min.css' %}">
+  </head>
+  <body>
+    <img class="bg noselect" src="{% static 'philm/img/seats.png' %}" />
+    <div class="grid-container">
+      <div class="grid-x grid-padding-x header-wrapper noselect">
+        <div class="header large-12 medium-12 small-12 cell">
+          <div class="grid-x grid-padding-x">
+            <div class="large-6 medium-6 small-6 cell">
+              <a class="go-home" href="{% url 'philm:index' %}">
+                <i class="fas fa-film" id="home"></i>
+                <span class="full-text"><label for="home">Privately Hosted Index of Localized Movies</label></span>
+                <span class="short-text"><label for="home">PHILM</label></span>
+              </a>
+            </div>
+            <div class="large-6 medium-6 small-6 cell icon-right">
+              <a class="fas fa-user-circle" type="button"></a>
+              &emsp;
+              <a class="fas fa-sign-out-alt" type="button" href="{% url 'philm:logout_view'%}"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid-x grid-padding-x">
+        <div class="large-12 medium-12 small-12 cell">
+          <div class="user-info">
+            <div class="user-img-wrap">
+              <img class="noselect user-img" src="../../{{ user.person_avatar }}" alt="{{ user.person_user }}" title="{{ user.person_user }}" />
+            </div>
+            <div class="user-info-wrap">
+              <p>
+                Username:
+                <span>
+                  {{ user.person_user }}
+                </span>
+              </p>
+              <p>
+                Name:
+                <span>
+                  {{ user.person_user.first_name }} {{ user.person_user.last_name }}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% else %}
+        <div class="large-6 medium-12 small-12 cell">
+          <div class="card-solo">
+            <div class="grid-x grid-padding-x">
+              <div class="large-12 medium-12 small-12 cell">
+                <div class="error-info">
+                  <h4>
+                    ERROR
+                  </h4>
+                  <br />
+                  <h5>
+                    User Not Found
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+
+    <script src="{% static 'philm/js/vendor/jquery.js' %}"></script>
+    <script src="{% static 'philm/js/vendor/what-input.js' %}"></script>
+    <script src="{% static 'philm/js/vendor/foundation.min.js' %}"></script>
+    <script src="{% static 'philm/js/app.js' %}"></script>
+  </body>
+</html>
