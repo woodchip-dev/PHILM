@@ -24,10 +24,12 @@ def login(request):
 
     return render(request, 'philm/login.html', context = {})
 
+
 @login_required(login_url = '/login/', redirect_field_name = None)
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(settings.LOGIN_URL)
+
 
 
 # MAIN, MOVIE, USER PAGES
@@ -36,7 +38,7 @@ def logout_view(request):
 def index(request):
     genre_list = Genres.objects.all()
     year_list = Years.objects.all()
-
+     
     if request.method == 'POST':
         keyword = request.POST.get('keyword', '')
         keyword = keyword.split(' ')
@@ -84,12 +86,14 @@ def index(request):
             exyear_query &= ~Q(film_year__exact = exyear)
 
         film_list = Film.objects.filter(title_query & (exgen_query & ingen_query) & (inyear_query & exyear_query))
-        
+
     else:
         film_list = Film.objects.all()
 
+
     context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user}
     return render(request, 'philm/index.html', context)
+
 
 @login_required(login_url = '/login/', redirect_field_name = None)
 def movie(request, film_id):
@@ -98,6 +102,7 @@ def movie(request, film_id):
 
     context = {'film': film, 'review_list': reviews, 'person': request.user}
     return render(request, 'philm/movie.html', context)
+
 
 @login_required(login_url = '/login/', redirect_field_name = None)
 def person(request, user_id):
@@ -108,12 +113,31 @@ def person(request, user_id):
     return render(request, 'philm/user.html', context)
 
 
+
 # USER ACTIONS
 
 @login_required(login_url = '/login/', redirect_field_name = None)
-def post_review(request, terms):
-    context = {}
-    return render(request, 'philm/movie.html', context)
+def post_review(request, film_id):
+    if request.method == 'POST':
+        rev = request.POST.get('rev', '')
+        username = User.objects.get(username = request.user.username)
+        person = Person.objects.get(person_user = username)
+        film = Film.objects.get(id = film_id)
+
+        Reviews.objects.create(reviews_uid = person, reviews_fid = film, reviews_review = rev)
+
+        # redirect w/JS in html file
+        #<script>
+        #window.setTimeout(function(){
+        #window.location.href = "m/film_id";
+        #}, 2000);
+        #<script>
+
+        #context = {'film': film, 'review_list': reviews, 'person': request.user}
+        return render(request, 'philm/review.html', context={})
+    else:
+        return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+
 
 @login_required(login_url = '/login/', redirect_field_name = None)
 def edit_review(request, terms):
