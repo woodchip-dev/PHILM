@@ -5,8 +5,8 @@ from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth.models import User
 from .models import Film, Genres, Years, Reviews, Person
-from django.contrib.auth import login as auth_login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login, authenticate, logout
 
 
 # AUTH
@@ -24,7 +24,7 @@ def login(request):
 
     return render(request, 'philm/login.html', context = {})
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(settings.LOGIN_URL)
@@ -32,7 +32,7 @@ def logout_view(request):
 
 # MAIN, MOVIE, USER PAGES
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def index(request):
     genre_list = Genres.objects.all()
     year_list = Years.objects.all()
@@ -84,14 +84,14 @@ def index(request):
             exyear_query &= ~Q(film_year__exact = exyear)
 
         film_list = Film.objects.filter(title_query & (exgen_query & ingen_query) & (inyear_query & exyear_query))
-
+        
     else:
         film_list = Film.objects.all()
 
     context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user}
     return render(request, 'philm/index.html', context)
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def movie(request, film_id):
     film = Film.objects.get(id = film_id)
     reviews = Reviews.objects.filter(reviews_fid = film_id)
@@ -99,7 +99,7 @@ def movie(request, film_id):
     context = {'film': film, 'review_list': reviews, 'person': request.user}
     return render(request, 'philm/movie.html', context)
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def person(request, user_id):
     username = User.objects.get(username = user_id)
     person = Person.objects.get(person_user = username)
@@ -110,12 +110,12 @@ def person(request, user_id):
 
 # USER ACTIONS
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def post_review(request, terms):
     context = {}
     return render(request, 'philm/movie.html', context)
 
-@login_required(login_url = '/login/')
+@login_required(login_url = '/login/', redirect_field_name = None)
 def edit_review(request, terms):
     context = {}
     return render(request, 'philm/movie.html', context)
