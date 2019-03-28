@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.db.models import Q
 from django.conf import settings
+from django.utils.timezone import utc
+from datetime import datetime, timezone
 from django.contrib.auth.models import User
 from .models import Film, Genres, Years, Reviews, Person
 from django.contrib.auth.decorators import login_required
@@ -90,7 +92,6 @@ def index(request):
     else:
         film_list = Film.objects.all()
 
-
     context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user}
     return render(request, 'philm/index.html', context)
 
@@ -100,7 +101,24 @@ def movie(request, film_id):
     film = Film.objects.get(id = film_id)
     reviews = Reviews.objects.filter(reviews_fid = film_id)
 
-    context = {'film': film, 'review_list': reviews, 'person': request.user}
+    username = User.objects.get(username = request.user.username)
+    person = Person.objects.get(person_user = username)
+
+    permitted = False
+    try:
+        exists = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
+    except Reviews.DoesNotExist:
+        exists = None
+
+    if not exists == None:
+        if get_timediff(Reviews.objects.get(reviews_uid = person, reviews_fid = film)) < 5:
+            permitted = True
+        else:
+            permitted = False
+    else:
+        permitted = False
+
+    context = {'film': film, 'review_list': reviews, 'person': request.user, 'permitted': permitted}
     return render(request, 'philm/movie.html', context)
 
 
@@ -126,27 +144,36 @@ def post_review(request, film_id):
 
         try:
             exists = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
-        except Reviews.objects.DoesNotExist:
+        except Reviews.DoesNotExist:
             exists = None
 
+        timediff = 0
+        permitted = False
         if exists == None:
             Reviews.objects.create(reviews_uid = person, reviews_fid = film, reviews_review = rev)
-
+            permitted = True
         else:
-            Reviews.objects.filter(reviews_uid = person, reviews_fid = film).update(reviews_review = rev)
+            rev_obj = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
+            timediff = get_timediff(rev_obj)
+            print(timediff)
+            if timediff < 5:
+                permitted = True
+                Reviews.objects.filter(reviews_uid = person, reviews_fid = film).update(reviews_review = rev)
+            else:
+                permitted = False
 
         try:
             posted = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
-        except Reviews.objects.DoesNotExist:
+        except Reviews.DoesNotExist:
             posted = None
 
         success = False
-        if not posted == None:
+        if not posted == None and permitted:
             success = True
         else:
             success = False
 
-        context = {'film': film, 'success': success, 'person': request.user, 'permitted': False}
+        context = {'film': film, 'success': success, 'person': request.user, 'permitted': permitted, 'timediff': timediff}
         return render(request, 'philm/review.html', context)
     else:
         return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
@@ -156,3 +183,13 @@ def post_review(request, film_id):
 def edit_review(request, terms):
     context = {}
     return render(request, 'philm/movie.html', context)
+
+
+
+# HELPER FUNCTIONS
+
+def get_timediff(review):
+    now = datetime.now(timezone.utc)
+    prev = review.reviews_created
+
+    return (now - prev).total_seconds() / 60

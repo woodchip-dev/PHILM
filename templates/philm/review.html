@@ -42,7 +42,7 @@
               {% if success %}
                 <div class="none-found large-12 medium-12 small-12 cell">
                   <h5>
-                    SUCCESSFULLY ADDED REVIEW FOR
+                    SUCCESSFULLY ADDED OR MODIFIED REVIEW FOR
                   </h5>
                   <h5>
                     {{ film.film_title }} ({{ film.film_year }})
@@ -51,7 +51,7 @@
               {% else %}
                 <div class="none-found large-12 medium-12 small-12 cell">
                   <h5>
-                    ERROR: REVIEW CANNOT BE ADDED
+                    ERROR: REVIEW COULD NOT BE ADDED OR MODIFIED
                   </h5>
                 </div>
               {% endif %}

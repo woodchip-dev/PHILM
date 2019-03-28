@@ -1,5 +1,6 @@
 import os
 from django.db import models
+from datetime import datetime
 from django.contrib.auth.models import User
 from philm.storage import OverwriteStorage
 
@@ -63,9 +64,10 @@ class Person(models.Model):
 
 
 class Reviews(models.Model):
-    reviews_uid    = models.ForeignKey(Person, on_delete=models.SET_NULL, null=True, verbose_name='User')
-    reviews_fid    = models.ForeignKey(Film, on_delete=models.SET_NULL, null=True, verbose_name='Film')
-    reviews_review = models.TextField(max_length=5000, verbose_name='Review')
+    reviews_uid     = models.ForeignKey(Person, on_delete=models.SET_NULL, null=True, verbose_name='User')
+    reviews_fid     = models.ForeignKey(Film, on_delete=models.SET_NULL, null=True, verbose_name='Film')
+    reviews_review  = models.TextField(max_length=5000, verbose_name='Review')
+    reviews_created = models.DateTimeField(default = datetime.now, blank = True, null = True)
 
     def __str__(self):
         return u'%s :: %s' % (self.reviews_uid, self.reviews_fid)
