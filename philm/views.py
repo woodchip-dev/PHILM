@@ -126,15 +126,19 @@ def post_review(request, film_id):
 
         Reviews.objects.create(reviews_uid = person, reviews_fid = film, reviews_review = rev)
 
-        # redirect w/JS in html file
-        #<script>
-        #window.setTimeout(function(){
-        #window.location.href = "m/film_id";
-        #}, 2000);
-        #<script>
+        try:
+            posted = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
+        except Reviews.objects.DoesNotExist:
+            posted = None
 
-        #context = {'film': film, 'review_list': reviews, 'person': request.user}
-        return render(request, 'philm/review.html', context={})
+        success = False
+        if not posted == None:
+            success = True
+        else:
+            success = False
+
+        context = {'film': film, 'success': success, 'person': request.user}
+        return render(request, 'philm/review.html', context)
     else:
         return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
