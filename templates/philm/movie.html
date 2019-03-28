@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ film.film_title }}_{{ film.film_year }}</title>
+    <title>{{ film.film_title }} ({{ film.film_year }})</title>
     {% load static %}
     <link rel="icon" href="{% static 'philm/img/favicon.ico' %}">
     <link rel="stylesheet" href="{% static 'philm/css/foundation.min.css' %}">
@@ -41,7 +41,7 @@
               <div class="grid-x grid-padding-x">
                 <div class="large-12 medium-12 small-12 cell">
                   <div class="card-img-wrap">
-                    <img class="noselect card-img-solo" src="../../{{ film.film_poster }}" alt="{{ film.film_title }}_{{ film.film_year }}" title="{{ film.film_title }}_{{ film.film_year }}" />
+                    <img class="noselect card-img-solo" src="../../{{ film.film_poster }}" alt="{{ film.film_title }} ({{ film.film_year }})" title="{{ film.film_title }} ({{ film.film_year }})" />
                   </div>
                   <div class="card-info-wrap">
                     <h4>{{ film.film_title }}</h4>
