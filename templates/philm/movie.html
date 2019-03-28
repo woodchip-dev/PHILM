@@ -85,21 +85,27 @@
                                 </span>
                                 <img class="noselect rev-img" src="../../{{ review.reviews_uid.person_avatar }}" alt="{{ review.reviews_uid }}" title="{{ review.reviews_uid }}" />
                               </div>
-                              </a>
+                            </a>
                             <div class="rev-info-wrap">
-                              <p>
-                                {{ review.reviews_review }}
-                              </p>
+                              {% if review.reviews_uid.id == person.id %}
+                                <p id="edit-this">
+                              {% else %}
+                                <p>
+                              {% endif %}
+                                  {{ review.reviews_review }}
+                                </p>
                             </div>
                           </div>
                         </div>
-                        <div class="grid-x grid-padding-x">
-                          <div class="large-12 medium-12 small-12 cell">
-                            <div class="edit-bar">
-                              <a class="edit" href="edit.html">EDIT</a>
+                        {% if review.reviews_uid.id == person.id %}
+                          <div class="grid-x grid-padding-x">
+                            <div class="large-12 medium-12 small-12 cell">
+                              <div class="edit-bar">
+                                <a class="edit" href="#edit" id="can-edit" onclick="get_rev()">EDIT</a>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
@@ -120,14 +126,14 @@
         <hr />
         <div class="grid-x grid-padding-x">
           <div class="large-12 medium-12 small-12 cell">
-            <div class="post-review">
+            <div class="post-review" id="edit">
               
               <form action="/m/{{ film.id }}/post_review/" method="post">
                 {% csrf_token %}
                 <div class="large-12 medium-12 small-12 medium-12 cell">
                   <div class="grid-x grid-padding-x">
                     <div class="large-12 medium-12 small-12 cell">
-                      <textarea name="rev" rows="10"></textarea>
+                      <textarea name="rev" id="edit-here" rows="10"></textarea>
                     </div>
                   </div>
                 </div>

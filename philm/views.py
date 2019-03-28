@@ -124,7 +124,16 @@ def post_review(request, film_id):
         person = Person.objects.get(person_user = username)
         film = Film.objects.get(id = film_id)
 
-        Reviews.objects.create(reviews_uid = person, reviews_fid = film, reviews_review = rev)
+        try:
+            exists = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
+        except Reviews.objects.DoesNotExist:
+            exists = None
+
+        if exists == None:
+            Reviews.objects.create(reviews_uid = person, reviews_fid = film, reviews_review = rev)
+
+        else:
+            Reviews.objects.filter(reviews_uid = person, reviews_fid = film).update(reviews_review = rev)
 
         try:
             posted = Reviews.objects.get(reviews_uid = person, reviews_fid = film)
@@ -137,7 +146,7 @@ def post_review(request, film_id):
         else:
             success = False
 
-        context = {'film': film, 'success': success, 'person': request.user}
+        context = {'film': film, 'success': success, 'person': request.user, 'permitted': False}
         return render(request, 'philm/review.html', context)
     else:
         return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
