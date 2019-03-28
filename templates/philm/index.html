@@ -127,7 +127,7 @@
                       </h4>
                       <h5>{{ film.film_year }}</h5>
                       <h6>{% for genres in film.film_genres.all %}{{ genres }}&emsp;{% endfor %}</h6>
-                      <h6><a href="https://www.imdb.com/title/{{ film.film_imdb }}/" target="_blank">See IMDB Page</a></h6>
+                      <h6><a href="https://www.imdb.com/title/{{ film.film_imdb }}/" target="_blank">See IMDb Page</a></h6>
                       <h6><a href="https://www.youtube.com/results?search_query={{ film.film_title }}+{{ film.film_year }}+trailer" target="_blank">Find Trailers on YouTube</a></h6>
                     </div>
                   </div>
