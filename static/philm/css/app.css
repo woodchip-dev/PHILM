@@ -45,6 +45,12 @@ body
     color: #000000;
 }
 
+#home
+{
+    display: inline-block;
+    vertical-align: baseline;
+}
+
 label[for=home]
 {
     font-size: 1.5625rem;
@@ -55,7 +61,7 @@ label[for=home]
     color: inherit;
     text-rendering: optimizeLegibility;
     display: inline-block;
-    vertical-align: top;
+    vertical-align: 5%;
     cursor: pointer;
 }
 

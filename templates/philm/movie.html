@@ -20,9 +20,14 @@
             <div class="grid-x grid-padding-x">
               <div class="large-6 medium-6 small-6 cell">
                 <a class="go-home" href="{% url 'philm:index' %}">
-                  <i class="fas fa-film" id="home"></i>
-                  <span class="full-text"><label for="home">Privately Hosted Index of Localized Movies</label></span>
-                  <span class="short-text"><label for="home">PHILM</label></span>
+                  <i class="fas fa-film" id="home">
+                    <span class="full-text">
+                      <label for="home">Privately Hosted Index of Localized Movies</label>
+                    </span>
+                    <span class="short-text">
+                      <label for="home">PHILM</label>
+                    </span>
+                  </i>
                 </a>
               </div>
               <div class="large-6 medium-6 small-6 cell icon-right">
@@ -78,14 +83,14 @@
                       <div class="review">
                         <div class="grid-x grid-padding-x">
                           <div class="large-12 medium-12 small-12 cell">
-                            <a href="/u/{{ review.reviews_uid }}/">
-                              <div class="rev-img-wrap">
+                            <div class="rev-img-wrap">
+                              <a href="/u/{{ review.reviews_uid }}/">
                                 <span class="username">
                                   {{ review.reviews_uid }}
                                 </span>
                                 <img class="noselect rev-img" src="../../{{ review.reviews_uid.person_avatar }}" alt="{{ review.reviews_uid }}" title="{{ review.reviews_uid }}" />
-                              </div>
-                            </a>
+                              </a>
+                            </div>
                             <div class="rev-info-wrap">
                               {% if review.reviews_uid.id == person.id %}
                                 <p id="edit-this">
