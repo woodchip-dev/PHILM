@@ -69,15 +69,61 @@
               <div class="grid-x grid-padding-x">
                 <div class="large-12 medium-12 small-12 cell">
                   <div class="rev-header">
+                    {% if not notes %}
                     <h4>Reviews</h4>
+                    {% else %}
+                    <h4>Notes</h4>
+                    {% endif %}
                   </div>
                   
                 </div>
               </div>
               <hr />
 
-              {% if review_list %}
+              {% if review_list and not notes %}
                 {% for review in review_list %}
+                  <div class="grid-x grid-padding-x">
+                    <div class="large-12 medium-12 small-12 cell">
+                      <div class="review">
+                        <div class="grid-x grid-padding-x">
+                          <div class="large-12 medium-12 small-12 cell">
+                            <div class="rev-img-wrap">
+                              <a href="/u/{{ review.reviews_uid }}/">
+                                <span class="username">
+                                  {{ review.reviews_uid }}
+                                </span>
+                                <img class="noselect rev-img" src="../../{{ review.reviews_uid.person_avatar }}" alt="{{ review.reviews_uid }}" title="{{ review.reviews_uid }}" />
+                              </a>
+                            </div>
+                            <div class="rev-info-wrap">
+                              {% if review.reviews_uid.id == person.id %}
+                                <p id="edit-this">
+                              {% else %}
+                                <p>
+                              {% endif %}
+                                  {{ review.reviews_review }}
+                                </p>
+                            </div>
+                          </div>
+                        </div>
+                        {% if review.reviews_uid.id == person.id and permitted and editable %}
+                          <div class="grid-x grid-padding-x">
+                            <div class="large-12 medium-12 small-12 cell">
+                              <div class="edit-bar">
+                                <a class="edit" href="#edit" id="can-edit" onclick="get_rev()">EDIT</a>
+                              </div>
+                            </div>
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+              {% endfor %}
+
+              {% elif notes and review_list %}
+                {% for review in review_list %}
+                  {% if  review.reviews_uid.id == person.id %}
                   <div class="grid-x grid-padding-x">
                     <div class="large-12 medium-12 small-12 cell">
                       <div class="review">
@@ -114,15 +160,26 @@
                       </div>
                     </div>
                   </div>
-
+                  {% else %}
+                    <div class="none-found large-12 medium-12 small-12 cell">
+                      <h5>
+                        NONE FOUND
+                      </h5>
+                    </div>
+                  {% endif %}
               {% endfor %}
               {% else %}
                 <div class="none-found large-12 medium-12 small-12 cell">
                   <h5>
-                    NO REVIEWS FOUND
+                    NONE FOUND
                   </h5>
                 </div>
               {% endif %}
+
+
+
+
+
 
             </div>
           </div>

@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login, authenticate, logout
 
 
+
 # AUTH
 
 def login(request):
@@ -96,6 +97,14 @@ def index(request):
     return render(request, 'philm/index.html', context)
 
 
+# .:: MODES ::. #
+#
+# Reviews w/ edits: 'permitted': permitted [movie]; 'editable': True [movie]; 'notes': False [movie]
+#
+# Reviews w/o edits: 'permitted': permitted [movie]; 'editable': False [movie]; 'notes': False [movie]
+#
+# Notes: 'permitted': True [movie]; 'editable': True/False [movie]; 'notes': True [movie]
+
 @login_required(login_url = '/login/', redirect_field_name = None)
 def movie(request, film_id):
     film = Film.objects.get(id = film_id)
@@ -118,7 +127,7 @@ def movie(request, film_id):
     else:
         permitted = False
 
-    context = {'film': film, 'review_list': reviews, 'person': request.user, 'permitted': permitted}
+    context = {'film': film, 'review_list': reviews, 'person': request.user, 'permitted': permitted, 'editable': True, 'notes': False}
     return render(request, 'philm/movie.html', context)
 
 
@@ -179,14 +188,7 @@ def post_review(request, film_id):
         return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
 
-@login_required(login_url = '/login/', redirect_field_name = None)
-def edit_review(request, terms):
-    context = {}
-    return render(request, 'philm/movie.html', context)
-
-
-
-# HELPER FUNCTIONS
+# HELPER FUNCTION(S)
 
 def get_timediff(review):
     now = datetime.now(timezone.utc)
