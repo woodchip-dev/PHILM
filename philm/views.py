@@ -37,6 +37,14 @@ def logout_view(request):
 
 # MAIN, MOVIE, USER PAGES
 
+# .:: MODES ::. #
+#
+# Show Slogan: 'slogan': True [index]
+#
+# Show Recent Reviews Link: 'recent': True [index]
+#
+# No Individual Movie Pages: 'no_reviews': True [index]
+
 @login_required(login_url = '/login/', redirect_field_name = None)
 def index(request):
     genre_list = Genres.objects.all()
