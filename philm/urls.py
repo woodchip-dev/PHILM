@@ -9,6 +9,7 @@ urlpatterns = [
     path('m/<slug:film_id>/', views.movie, name = 'movie'),
     path('u/<slug:user_id>/', views.person, name = 'person'),
     path('m/<slug:film_id>/post_review/', views.post_review, name = 'post_review'),
+    path('recent/', views.recent, name = 'recent'),
     path('login/', views.login, name = 'login'),
     path('logout/', views.logout_view, name='logout_view'),
 ]

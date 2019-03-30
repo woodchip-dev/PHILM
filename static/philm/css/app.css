@@ -149,6 +149,29 @@ h4 a:hover, .rev-img-wrap a:hover, .username:hover
     margin: 0;
 }
 
+.slogan
+{
+    text-align: center;
+    color: #eeaa44;
+    font-weight: 700;
+}
+
+.recent
+{
+    text-align: center;
+}
+
+.recent a
+{
+    color: #eeaa44;
+    font-weight: 700;
+}
+
+.recent a:hover
+{
+    color: #de9a34;
+}
+
 
 /* :: LOGIN :: */
 .go-login

@@ -112,11 +112,20 @@
         </div>
       </div>
       <hr />
+      {% if slogan %}
+      <div class="slogan">
+          What's for movie night?
+      </div>
+      {% elif recent %}
+      <div class="recent">
+          <a href="{% url 'philm:recent'%}">Recent Reviews</a>
+      </div>
+      {% endif %}
       <hr />
       <div class="grid-x grid-padding-x noselect">
-
         {% if film_list %}
           {% for film in film_list %}
+            {% if not no_reviews %}
             <div class="large-6 medium-12 small-12 cell">
               <div class="cards">
                 <div class="grid-x grid-padding-x">
@@ -139,6 +148,29 @@
                 </div>
               </div>
             </div>
+            {% else %}
+            <div class="large-6 medium-12 small-12 cell">
+                <div class="cards">
+                  <div class="grid-x grid-padding-x">
+                    <div class="large-12 medium-12 small-12 cell">
+                      <div class="card-img-wrap">
+                        <img class="noselect card-img" src="../{{ film.film_poster }}" alt="{{ film.film_title }} ({{ film.film_year }})" title="{{ film.film_title }} ({{ film.film_year }})" />
+                      </div>
+                      <div class="card-info-wrap">
+                        <h4>
+                          {{ film.film_title }}
+                        </h4>
+                        <h5>{{ film.film_year }}</h5>
+                        <h6>{% for genres in film.film_genres.all %}{{ genres }}&emsp;{% endfor %}</h6>
+                        <h6><a href="https://www.imdb.com/title/{{ film.film_imdb }}/" target="_blank">See IMDb Page</a></h6>
+                        <h6><a href="https://www.youtube.com/results?search_query={{ film.film_title }}+{{ film.film_year }}+trailer" target="_blank">Find Trailers on YouTube</a></h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
           {% endfor %}
       </div>
 

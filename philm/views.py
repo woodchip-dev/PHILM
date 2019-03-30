@@ -93,7 +93,7 @@ def index(request):
     else:
         film_list = Film.objects.all()
 
-    context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user}
+    context = {'film_list': film_list, 'genre_list': genre_list, 'year_list': year_list, 'person': request.user, 'slogan': False, 'recent': False, 'no_reviews': False}
     return render(request, 'philm/index.html', context)
 
 
@@ -139,6 +139,12 @@ def person(request, user_id):
     context = {'user': person, 'person': request.user}
     return render(request, 'philm/user.html', context)
 
+
+@login_required(login_url = '/login/', redirect_field_name = None)
+def recent(request):
+    last_ten = Reviews.objects.all().order_by('-id')[:10]
+    context = {'review_list': last_ten, 'person': request.user}
+    return render(request, 'philm/recent.html', context)
 
 
 # USER ACTIONS
