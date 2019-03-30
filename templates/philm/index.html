@@ -98,7 +98,7 @@
                   </div>
                 </div>
               </div>
-
+              <br />
               <div class="grid-x grid-padding-x">
                 <div class="large-12 medium-12 small-12 cell">
                   <button class="go-search" type="submit">
@@ -141,11 +141,14 @@
             </div>
           {% endfor %}
       </div>
+
+      {% if showmore %}
       <div class="grid-x grid-padding-x">
         <div class="more large-12 medium-12 small-12 cell">
             <i class="fas fa-caret-down"></i>
         </div>
       </div>
+      {% endif %}
         {% else %}
         <div class="none-found large-12 medium-12 small-12 cell">
           <h5>
@@ -156,7 +159,7 @@
         {% endif %}
 
     </div>
-
+    <br />
     <script src="{% static 'philm/js/vendor/jquery.js' %}"></script>
     <script src="{% static 'philm/js/vendor/what-input.js' %}"></script>
     <script src="{% static 'philm/js/vendor/foundation.min.js' %}"></script>

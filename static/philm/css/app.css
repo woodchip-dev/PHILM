@@ -80,10 +80,15 @@ hr
     border: none;
 }
 
+h6 a
+{
+    text-decoration: underline;
+}
+
 h6 a, .edit-bar a
 {
     color: #ff0000;
-    font-weight: 700;
+    font-weight: 500;
     overflow: hidden;
 }
 
@@ -95,6 +100,13 @@ h6 a:hover, .edit-bar a:hover
 h4
 {
     margin: 0;
+}
+
+h4
+{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 h4 a, .rev-img-wrap a, .card-info-wrap h4, .card-info-wrap h5, .error-info h4, .error-info h5, .username
